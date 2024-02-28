@@ -1,15 +1,11 @@
-//!
-
 use std::ops::Add;
 
-#[cfg(feature = "len-generic")]
 pub use len::*;
 
-#[cfg(feature = "len-generic")]
 pub mod len {
     //! Some Traits could be used in generic to bound the Tuple length (in compile time).  
     //!
-    //! Every [Tuple](crate::prelude::Tuple) has been implemented [TupleY] trait.  
+    //! Every [Tuple](crate::prelude::Tuple) has been implemented [TupleY](crate::prelude::TupleY) trait.  
     //! So they have const LEN: `const <Self as TupleY>::LEN: usize`  
     //!
     //! There are some traits like `TupleLenEq`, `TupleLenGt`, `TupleLenGe` could limit the passed-in param in generic  
@@ -39,10 +35,12 @@ pub mod len {
     //! }
     //! ```
 
+    #[cfg(feature = "len-generic")]
     use super::TupleY;
 
     macro_rules! impl_trait {
         ($trait:ident; $($tt:tt)*) => {
+            #[cfg(feature = "len-generic")]
             impl<T: TupleY, const LEN: usize> $trait<LEN> for T where
                 [(); $($tt)*]: {}
         };
@@ -66,6 +64,7 @@ pub mod len {
     ///  LEFT <= Self::LEN < RIGHT
     pub trait TupleLenRange<const LEFT: usize, const RIGHT: usize> {}
 
+    #[cfg(feature = "len-generic")]
     impl<T: TupleY> TupleLenEq<{ Self::LEN }> for T {}
     impl_trait!(TupleLenGe; Self::LEN - LEN);
     impl_trait!(TupleLenGt; Self::LEN - LEN - 1);
@@ -73,6 +72,7 @@ pub mod len {
     impl_trait!(TupleLenLt; LEN - 1 - Self::LEN);
 
     #[rustfmt::skip]
+    #[cfg(feature = "len-generic")]
     impl<T: TupleY, const LEFT: usize, const RIGHT: usize> TupleLenRange<LEFT, RIGHT> for T where
         T: TupleLenGe<LEFT> + TupleLenLt<RIGHT>, {}
 }
