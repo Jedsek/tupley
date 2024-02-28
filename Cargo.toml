@@ -1,0 +1,23 @@
+[package]
+name = "tupley"
+version = "0.1.0"
+authors = ["Jedsek <jedsek@qq.com>"]
+edition = "2021"
+readme = "README.md"
+license = "MIT"
+documentation = "https://docs.rs/tupley/latest/tupley/"
+homepage = "https://github.com/jedsek/tupley"
+repository = "https://github.com/jedsek/tupley"
+keywords = [ "tuple", "hlist", "extension", "tupley"]
+description = "Extension for primitive tuple (Hlist based on recursive structure)"
+
+
+[features]
+default = []
+full = ["len-generic"]
+len-generic = []
+
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
